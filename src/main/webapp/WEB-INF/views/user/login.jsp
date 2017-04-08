@@ -52,7 +52,7 @@
 
             <div class="form-actions">
                 <button class="btn btn-primary" type="button" id="loginBtn">登录</button>
-                <a class="pull-right" href="/reg.do">注册账号</a>
+                <a class="pull-right" href="/signUp.do">注册账号</a>
             </div>
 
         </form>
@@ -92,7 +92,7 @@
                 $.ajax({
                     url: "/login.do",
                     type: "post",
-                    data: form.serialize(),
+                    data: $(form).serialize(),
                     beforeSend: function () {
                         $btn.text("登录中...").attr("disabled","disabled")
                     },
@@ -100,14 +100,15 @@
                         if(json.state == "error") {
                             alert(json.message);
                         } else {
-                            window.location.href = "${not empty param.redirecturl ? param.redirecturl : '/index.do'}";
+                            <%--window.location.href = "${not empty param.redirecturl ? param.redirecturl : '/index.do'}";--%>
+                            window.location.href = "/index.do";
                         }
                     },
                     error: function () {
                         alert("服务器异常");
                     },
                     complete: function () {
-                        $btn.text("登录").removeAttr("disable");
+                        $btn.text("登录").removeAttr("disabled");
                     }
                 });
 

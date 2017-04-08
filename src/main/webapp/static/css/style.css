@@ -121,3 +121,25 @@ body{
     text-decoration: none;
     color: #0e0e0e;
 }
+
+.reply-container{
+    background-color: #f7f8fa;
+    border: 1px solid #eee;
+    border-left-color:#1b809e;
+    border-left-width: 5px;
+    border-radius: 3px;
+    padding: 10px 5px;
+    overflow: hidden;
+}
+
+.reply-ul{
+    list-style: none;
+}
+
+.reply-ul li {
+    padding: 5px 0;
+}
+
+.username{
+    font-size: 12px;
+}

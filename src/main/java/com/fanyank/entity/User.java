@@ -87,4 +87,19 @@ public class User {
     public void setState(String state) {
         this.state = state;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", createtime='" + createtime + '\'' +
+                ", loginip='" + loginip + '\'' +
+                ", logintime='" + logintime + '\'' +
+                ", state='" + state + '\'' +
+                '}';
+    }
 }

@@ -11,7 +11,7 @@ public class ConfigProp {
     private static Properties prop = new Properties();
     static {
         try {
-            prop.load(ConfigProp.class.getResourceAsStream("config.properties"));
+            prop.load(ConfigProp.class.getClassLoader().getResourceAsStream("config.properties"));
         } catch (IOException e) {
             e.printStackTrace();
         }

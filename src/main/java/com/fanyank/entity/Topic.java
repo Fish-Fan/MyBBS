@@ -122,4 +122,23 @@ public class Topic implements Serializable {
     public void setReplytime(String replytime) {
         this.replytime = replytime;
     }
+
+    @Override
+    public String toString() {
+        return "Topic{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", text='" + text + '\'' +
+                ", createtime='" + createtime + '\'' +
+                ", userid=" + userid +
+                ", nodeid=" + nodeid +
+                ", viewnum=" + viewnum +
+                ", favnum=" + favnum +
+                ", likenum=" + likenum +
+                ", replynum=" + replynum +
+                ", replytime='" + replytime + '\'' +
+                ", user=" + user +
+                ", node=" + node +
+                '}';
+    }
 }

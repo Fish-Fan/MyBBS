@@ -22,7 +22,7 @@
                         <a href="/user/setting.do"><i class="fa fa-cog"></i></a>
                     </li>
                     <li>
-                        <a href="/logout.do"><i class="fa fa-sign-out"></i></a>
+                        <a href="/loginOut.do"><i class="fa fa-sign-out"></i></a>
                     </li>
                 </c:when>
                 <c:otherwise>

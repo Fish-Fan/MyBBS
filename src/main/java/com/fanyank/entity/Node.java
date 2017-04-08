@@ -20,4 +20,12 @@ public class Node {
     public void setNodename(String nodename) {
         this.nodename = nodename;
     }
+
+    @Override
+    public String toString() {
+        return "Node{" +
+                "id=" + id +
+                ", nodename='" + nodename + '\'' +
+                '}';
+    }
 }

@@ -1,5 +1,7 @@
 package com.fanyank.entity;
 
+import java.util.List;
+
 public class Comment {
 
     private Integer id;
@@ -8,6 +10,7 @@ public class Comment {
     private Integer userid;
     private Integer topicid;
     private User user;
+    private List<Reply> replyList;
 
     public User getUser() {
         return user;
@@ -55,5 +58,26 @@ public class Comment {
 
     public void setTopicid(Integer topicid) {
         this.topicid = topicid;
+    }
+
+    public List<Reply> getReplyList() {
+        return replyList;
+    }
+
+    public void setReplyList(List<Reply> replyList) {
+        this.replyList = replyList;
+    }
+
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "id=" + id +
+                ", comment='" + comment + '\'' +
+                ", createtime='" + createtime + '\'' +
+                ", userid=" + userid +
+                ", topicid=" + topicid +
+                ", user=" + user +
+                ", replyList=" + replyList +
+                '}';
     }
 }

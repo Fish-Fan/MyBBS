@@ -14,10 +14,10 @@ public class ConnectionManager {
     private static BasicDataSource dataSource = new BasicDataSource();
 
     static {
-        dataSource.setDriverClassName(ConfigProp.get("jdbc.Driver"));
+        dataSource.setDriverClassName(ConfigProp.get("jdbc.driver"));
         dataSource.setUrl(ConfigProp.get("jdbc.url"));
-        dataSource.setUsername("jdbc.username");
-        dataSource.setPassword("jdbc.password");
+        dataSource.setUsername(ConfigProp.get("jdbc.username"));
+        dataSource.setPassword(ConfigProp.get("jdbc.password"));
 
         dataSource.setInitialSize(5);
         dataSource.setMaxIdle(20);
