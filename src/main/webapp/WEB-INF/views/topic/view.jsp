@@ -20,7 +20,7 @@
     </style>
 </head>
 <body>
-<%@ include file="../include/nav.jsp"%>
+<%@ include file="../include/nav.jsp" %>
 <!--header-bar end-->
 <div class="container">
     <div class="box">
@@ -139,7 +139,7 @@
                                         </div>
                                     </td>
                                     <td width="50" style="vertical-align: bottom">
-                                        <a href="javascript:;" class="reply-icon" name="{{user.username}}" commentid="{{comment_id}}" touserid="{{to_user_id}}"> <i class="fa fa-reply"></i>回复</a>
+                                        <a href="javascript:;" class="reply-icon" name="{{user.username}}" commentid="{{comment_id}}" touserid="{{user_id}}"> <i class="fa fa-reply"></i>回复</a>
                                     </td>
                                 </tr>
                                 {{/each}}

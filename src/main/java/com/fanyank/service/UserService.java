@@ -1,10 +1,14 @@
 package com.fanyank.service;
 
+import com.fanyank.dao.ReplyDao;
 import com.fanyank.dao.UserDao;
+import com.fanyank.entity.Reply;
 import com.fanyank.entity.User;
 import com.fanyank.util.ConfigProp;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.joda.time.DateTime;
+
+import java.util.List;
 
 /**
  * Created by yanfeng-mac on 2017/3/28.
@@ -56,6 +60,16 @@ public class UserService {
         }
 
         return null;
+    }
+
+    public int getUnReadMsgCount(User user) {
+        ReplyDao replyDao = new ReplyDao();
+        return replyDao.getUnReadCount(user);
+    }
+
+    public List<Reply> getUnReadMsg(User user) {
+        ReplyDao replyDao = new ReplyDao();
+        return replyDao.getUnReadMsg(user);
     }
 
 

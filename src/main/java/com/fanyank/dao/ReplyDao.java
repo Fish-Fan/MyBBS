@@ -1,8 +1,10 @@
 package com.fanyank.dao;
 
 import com.fanyank.entity.Reply;
+import com.fanyank.entity.User;
 import com.fanyank.util.DBHelp;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
+import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 import java.util.List;
 
@@ -18,5 +20,15 @@ public class ReplyDao {
     public List<Reply> findByCommentId(Integer commentId) {
         String sql = "select * from t_reply where comment_id = ?";
         return DBHelp.query(sql,new BeanListHandler<Reply>(Reply.class),commentId);
+    }
+
+    public Integer getUnReadCount(User user) {
+        String sql = "select count(*) from t_reply where to_user_id = ? and isRead = 0";
+        return DBHelp.query(sql,new ScalarHandler<Long>(),user.getId()).intValue();
+    }
+
+    public List<Reply> getUnReadMsg(User user) {
+        String sql = "select * from t_reply where to_user_id = ? and isRead = 0";
+        return DBHelp.query(sql,new BeanListHandler<Reply>(Reply.class),user.getId());
     }
 }

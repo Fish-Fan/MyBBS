@@ -1,4 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <div class="header-bar">
     <div class="container">
         <a href="/index.do" class="brand">
@@ -16,7 +18,7 @@
                         <a href="/topic/new.do"><i class="fa fa-plus"></i></a>
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-bell"></i></a>
+                        <a href="/user/message"><i class="fa fa-bell"></i><span class="bage">${msgNum}</span></a>
                     </li>
                     <li>
                         <a href="/user/setting.do"><i class="fa fa-cog"></i></a>
