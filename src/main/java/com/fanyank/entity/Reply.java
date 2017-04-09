@@ -10,8 +10,12 @@ public class Reply {
     private Integer comment_id;
     private Integer user_id;
     private Integer to_user_id;
-    private User user;
     private Integer isRead;
+    private Integer topic_id;
+    private String topic_title;
+    private User user;
+
+
 
     public Integer getId() {
         return id;
@@ -77,6 +81,22 @@ public class Reply {
         this.isRead = isRead;
     }
 
+    public Integer getTopic_id() {
+        return topic_id;
+    }
+
+    public void setTopic_id(Integer topic_id) {
+        this.topic_id = topic_id;
+    }
+
+    public String getTopic_title() {
+        return topic_title;
+    }
+
+    public void setTopic_title(String topic_title) {
+        this.topic_title = topic_title;
+    }
+
     @Override
     public String toString() {
         return "Reply{" +
@@ -86,8 +106,10 @@ public class Reply {
                 ", comment_id=" + comment_id +
                 ", user_id=" + user_id +
                 ", to_user_id=" + to_user_id +
-                ", user=" + user +
                 ", isRead=" + isRead +
+                ", topic_id=" + topic_id +
+                ", topic_title='" + topic_title + '\'' +
+                ", user=" + user +
                 '}';
     }
 }

@@ -1,5 +1,7 @@
 package com.fanyank.web;
 
+import com.fanyank.entity.User;
+import com.fanyank.service.UserService;
 import com.google.gson.Gson;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
@@ -63,5 +65,15 @@ public class BaseServlet extends HttpServlet {
      */
     public boolean isAjaxRequest(HttpServletRequest req) {
         return "XMLHttpRequest".endsWith(req.getHeader("X-Requested-With"));
+    }
+
+    /**
+     * 获得当前用户未读消息的数量
+     * @param user
+     * @param req
+     */
+    public void getUnReadMsgCount(User user,HttpServletRequest req) {
+        UserService userService = new UserService();
+        req.setAttribute("msgNum",userService.getUnReadMsgCount(user));
     }
 }

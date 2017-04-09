@@ -25,13 +25,13 @@ public class TopicServlet extends BaseServlet {
         User user = (User) session.getAttribute("curr_user");
 
         TopicService topicService = new TopicService();
-        UserService userService = new UserService();
+
 
         req.setAttribute("topic",topicService.findById(topicId));
         req.setAttribute("commentList",topicService.findCommentByTopicId(topicId));
 
         if(user != null) {
-            req.setAttribute("msgNum",userService.getUnReadMsgCount(user));
+            getUnReadMsgCount(user,req);
         }
 
         forward(req,resp,"topic/view");

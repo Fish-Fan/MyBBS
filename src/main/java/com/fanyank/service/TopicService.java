@@ -118,18 +118,32 @@ public class TopicService {
         return commentList;
     }
 
-    public void saveNewReply(String content,String commentId,Integer user_id,String toUserId) {
+    /**
+     * 保存新回复
+     * @param content
+     * @param commentId
+     * @param user_id
+     * @param toUserId
+     * @param topic_id
+     */
+    public void saveNewReply(String content,String commentId,Integer user_id,String toUserId,String topic_id) {
         Integer id = new Integer(commentId);
         Integer toId = new Integer(toUserId);
+        Integer topicId = new Integer(topic_id);
 
         ReplyDao replyDao = new ReplyDao();
+        TopicDao topicDao = new TopicDao();
+
         Reply reply = new Reply();
+        Topic topic = topicDao.findById(topicId);
 
         reply.setContent(content);
         reply.setComment_id(id);
         reply.setReplytime(DateTime.now().toString("yyyy-MM-dd HH:mm:ss"));
         reply.setUser_id(user_id);
         reply.setTo_user_id(toId);
+        reply.setTopic_id(topicId);
+        reply.setTopic_title(topic.getTitle());
 
         replyDao.save(reply);
     }

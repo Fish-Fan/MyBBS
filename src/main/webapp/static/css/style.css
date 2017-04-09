@@ -143,3 +143,11 @@ body{
 .username{
     font-size: 12px;
 }
+
+.text-muted{
+    color: #777777;
+}
+
+.text-info{
+    color: #31708f;
+}

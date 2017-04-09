@@ -26,6 +26,7 @@ public class NewReplyServlet extends BaseServlet {
         String commentId = req.getParameter("commentId");
         String toUserId = req.getParameter("toUserId");
 
+
         HttpSession session = req.getSession();
         User user = (User) session.getAttribute("curr_user");
 
@@ -33,7 +34,7 @@ public class NewReplyServlet extends BaseServlet {
 
         if(user != null) {
             TopicService topicService = new TopicService();
-            topicService.saveNewReply(content,commentId,user.getId(),toUserId);
+            topicService.saveNewReply(content,commentId,user.getId(),toUserId,topicId);
             result.put("state","success");
             result.put("data",topicService.findCommentByTopicId(topicId));
 
