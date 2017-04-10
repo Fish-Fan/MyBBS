@@ -69,8 +69,20 @@ public class UserService {
 
     public List<Reply> getUnReadMsg(User user) {
         ReplyDao replyDao = new ReplyDao();
-        return replyDao.getUnReadMsg(user);
+        return replyDao.getMessage(user,0);
     }
+
+    public void setAlreadyRead(User user) {
+        ReplyDao replyDao = new ReplyDao();
+        replyDao.setAlreadyRead(user);
+    }
+
+    public List<Reply> getAlreadyReadMsg(User user) {
+        ReplyDao replyDao = new ReplyDao();
+        return replyDao.getMessage(user,1);
+    }
+
+
 
 
 }

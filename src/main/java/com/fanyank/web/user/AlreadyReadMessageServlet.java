@@ -1,7 +1,6 @@
-package com.fanyank.web.topic;
+package com.fanyank.web.user;
 
 import com.fanyank.entity.User;
-import com.fanyank.service.TopicService;
 import com.fanyank.service.UserService;
 import com.fanyank.web.BaseServlet;
 
@@ -13,29 +12,23 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
- * Created by yanfeng-mac on 2017/3/29.
+ * Created by yanfeng-mac on 2017/4/10.
  */
-@WebServlet("/topic/view.do")
-public class TopicServlet extends BaseServlet {
+@WebServlet("/user/alreadyreadmsg")
+public class AlreadyReadMessageServlet extends BaseServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String topicId = req.getParameter("id");
+        UserService userService = new UserService();
 
         HttpSession session = req.getSession();
         User user = (User) session.getAttribute("curr_user");
 
-        TopicService topicService = new TopicService();
-
-
-        req.setAttribute("topic",topicService.findById(topicId));
-        req.setAttribute("commentList",topicService.findCommentByTopicId(topicId));
-
         if(user != null) {
+            req.setAttribute("replyList",userService.getAlreadyReadMsg(user));
             getUnReadMsgCount(user,req);
         }
 
-        forward(req,resp,"topic/view");
-
+        forward(req,resp,"user/message");
 
     }
 }

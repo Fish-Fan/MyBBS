@@ -19,7 +19,7 @@
             <span class="title"><i class="fa fa-plus"></i> 发布新主题</span>
         </div>
 
-        <form method="post" style="padding: 20px" id="topicForm">
+        <form method="post" action="/topic/new.do" style="padding: 20px" id="topicForm">
             <label class="control-label">主题标题</label>
             <input type="text" name="title" style="width: 100%;box-sizing: border-box;height: 30px" placeholder="请输入主题标题，如果标题能够表达完整内容，则正文可以为空">
             <label class="control-label">正文</label>

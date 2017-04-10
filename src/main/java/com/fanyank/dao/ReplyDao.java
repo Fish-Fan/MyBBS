@@ -33,11 +33,11 @@ public class ReplyDao {
         return DBHelp.query(sql,new ScalarHandler<Long>(),user.getId()).intValue();
     }
 
-    public List<Reply> getUnReadMsg(User user) {
+    public List<Reply> getMessage(User user,Integer messageState) {
         String sql = "select t_reply.*,t_user.username,t_user.avatar,t_topic.title,t_topic.id\n" +
                 " from (t_reply left join t_user on t_reply.user_id = t_user.id)\n" +
                 "left join t_topic on t_reply.topic_id = t_topic.id \n" +
-                "where t_reply.isRead = 0 and t_reply.to_user_id = ?";
+                "where t_reply.isRead = ? and t_reply.to_user_id = ?";
         return DBHelp.query(sql, new ResultSetHandler<List<Reply>>() {
             public List<Reply> handle(ResultSet resultSet) throws SQLException {
                 List<Reply> replyList = new ArrayList<Reply>();
@@ -53,6 +53,13 @@ public class ReplyDao {
 
                 return replyList;
             }
-        }, user.getId());
+        },messageState, user.getId());
     }
+
+    public void setAlreadyRead(User user) {
+        String sql = "update t_reply set isRead = 1 where to_user_id = ?";
+        DBHelp.update(sql,user.getId());
+    }
+
+
 }

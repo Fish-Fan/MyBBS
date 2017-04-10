@@ -11,9 +11,9 @@ import java.util.List;
  * Created by yanfeng-mac on 2017/3/29.
  */
 public class TopicDao {
-    public void save(Topic topic) {
-        String sql = "insert into t_topic(title,text,createtime,userid,nodeid,viewnum,favnum,likenum,replynum,replytime)";
-        DBHelp.update(sql,topic.getTitle(),topic.getText(),topic.getCreatetime(),topic.getUserid(),topic.getNodeid(),topic.getViewnum(),topic.getFavnum(),topic.getLikenum(),topic.getReplynum(),topic.getReplytime());
+    public Integer save(Topic topic) {
+        String sql = "insert into t_topic(title,text,createtime,userid,nodeid) values(?,?,?,?,?)";
+        return DBHelp.insert(sql,topic.getTitle(),topic.getText(),topic.getCreatetime(),topic.getUserid(),topic.getNodeid()).intValue();
     }
 
     public List<Topic> getAllTopic() {

@@ -147,4 +147,18 @@ public class TopicService {
 
         replyDao.save(reply);
     }
+
+    public int saveNewTopic(String title,String content,String node_id,User user) {
+        TopicDao topicDao = new TopicDao();
+        Topic topic = new Topic();
+
+        topic.setUserid(new Integer(user.getId()));
+        topic.setNodeid(new Integer(node_id));
+        topic.setTitle(title);
+        topic.setText(content);
+        topic.setCreatetime(DateTime.now().toString("yyyy-MM-dd HH:mm:ss"));
+
+        return topicDao.save(topic);
+    }
+
 }

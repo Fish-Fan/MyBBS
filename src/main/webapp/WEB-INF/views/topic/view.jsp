@@ -127,7 +127,7 @@
 
                             <table class="table">
                                 {{#each replyList}}
-                                <tr>
+                                <tr id="reply-{{id}}">
                                     <td width="50">
                                         <img class="avatar" src="http://7xs9b4.com1.z0.glb.clouddn.com/{{user.avatar}}?imageView2/1/w/40/h/40" alt="">
                                     </td>

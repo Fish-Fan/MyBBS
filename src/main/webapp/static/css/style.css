@@ -151,3 +151,12 @@ body{
 .text-info{
     color: #31708f;
 }
+
+.left-container{
+    width: 20%;
+    background-color: #ffffff;
+}
+
+.right-container{
+    width: 80%;
+}
