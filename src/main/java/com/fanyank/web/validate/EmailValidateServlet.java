@@ -18,9 +18,11 @@ import java.io.IOException;
 public class EmailValidateServlet extends BaseServlet{
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String email = req.getParameter("email");
+        if(isAjaxRequest(req)) {
+            String email = req.getParameter("email");
 
-        ValidateService validateService = new ValidateService();
-        rendText(resp,validateService.emailNotExist(email));
+            ValidateService validateService = new ValidateService();
+            rendText(resp,validateService.emailNotExist(email));
+        }
     }
 }

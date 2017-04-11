@@ -52,8 +52,13 @@ public class TopicService {
      */
     public Topic findById(String topicId) {
         Integer id = new Integer(topicId);
+
         TopicDao topicDao = new TopicDao();
-        return topicDao.findById(id);
+        NodeDao nodeDao = new NodeDao();
+
+        Topic topic = topicDao.findById(id);
+        topic.setNode(nodeDao.findById(topic.getNodeid()));
+        return topic;
     }
 
 

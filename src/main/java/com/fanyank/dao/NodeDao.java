@@ -20,4 +20,9 @@ public class NodeDao {
         String sql = "select * from t_node";
         return DBHelp.query(sql,new BeanListHandler<Node>(Node.class));
     }
+
+    public Node findById(Integer node_id) {
+        String sql = "select * from t_node where id = ?";
+        return DBHelp.query(sql,new BeanHandler<Node>(Node.class),node_id);
+    }
 }
