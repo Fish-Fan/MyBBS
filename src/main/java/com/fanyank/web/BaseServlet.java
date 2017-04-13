@@ -75,5 +75,6 @@ public class BaseServlet extends HttpServlet {
     public void getUnReadMsgCount(User user,HttpServletRequest req) {
         UserService userService = new UserService();
         req.setAttribute("msgNum",userService.getUnReadMsgCount(user));
+
     }
 }

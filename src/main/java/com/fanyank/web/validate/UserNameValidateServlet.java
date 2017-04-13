@@ -17,8 +17,19 @@ public class UserNameValidateServlet extends BaseServlet{
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String username = req.getParameter("username");
+        String action = req.getParameter("action");
 
         ValidateService validateService = new ValidateService();
-        rendText(resp,validateService.usernameNotExist(username));
+        String result = validateService.usernameNotExist(username);
+
+        if(action.equals("forget")) {
+            if(result.equals("true")) {
+                rendText(resp,"false");
+            } else {
+                rendText(resp,"true");
+            }
+        } else {
+            rendText(resp,result);
+        }
     }
 }

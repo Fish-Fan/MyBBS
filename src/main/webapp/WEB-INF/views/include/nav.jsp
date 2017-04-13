@@ -18,11 +18,12 @@
                     </li>
                     <li>
                         <a href="/user/message"><i class="fa fa-bell"></i>
-                            <span class="bage">
-                                <c:if test="${msgNum} != 0" >
-                                    ${msgNum}
-                                </c:if>
-                            </span>
+                            <c:if test="${msgNum != 0}" >
+                                <span class="badge" style="background-image: linear-gradient(to right, #f83600 0%, #f9d423 100%);">
+                                        ${msgNum}
+                                </span>
+                            </c:if>
+
                         </a>
                     </li>
                     <li>

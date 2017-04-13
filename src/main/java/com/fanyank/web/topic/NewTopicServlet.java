@@ -2,7 +2,10 @@ package com.fanyank.web.topic;
 
 import com.fanyank.entity.User;
 import com.fanyank.service.TopicService;
+import com.fanyank.util.ConfigProp;
 import com.fanyank.web.BaseServlet;
+import com.qiniu.util.Auth;
+import com.qiniu.util.StringMap;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.ServletException;
@@ -25,7 +28,15 @@ public class NewTopicServlet extends BaseServlet {
 
         TopicService topicService = new TopicService();
 
+        Auth auth = Auth.create(ConfigProp.get("qiniu.ak"),ConfigProp.get("qiniu.sk"));
+        StringMap map = new StringMap();
+        StringMap returnBody = map.put("returnBody", "{\"success\":true,\"file_path\":\"http://ok2crkjlq.bkt.clouddn.com/${key}\"}");
+
+        String token = auth.uploadToken(ConfigProp.get("qiniu.bucket"),null,3600,map);
+
         if(user != null) {
+            getUnReadMsgCount(user,req);
+            req.setAttribute("token",token);
             req.setAttribute("nodeList",topicService.getAllNode());
             forward(req,resp,"topic/new");
         } else {

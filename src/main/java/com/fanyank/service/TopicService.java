@@ -34,14 +34,28 @@ public class TopicService {
      */
     public List<Topic> findTopicByNode(String nodeId) {
         TopicDao topicDao = new TopicDao();
+        UserDao userDao = new UserDao();
+
+        List<Topic> topicList = null;
 
         if(nodeId == null || "".equals(nodeId)) {
-            return topicDao.getAllTopic();
+            topicList = topicDao.getAllTopic();
+            for(Topic topic : topicList) {
+                topic.setUser(userDao.findById(topic.getUserid()));
+                System.out.println(topic);
+            }
+
         } else {
             Integer nodeID = new Integer(nodeId);
 
-            return topicDao.findByNode(nodeID);
+            topicList = topicDao.findByNode(nodeID);
+            for(Topic topic : topicList) {
+                topic.setUser(userDao.findById(topic.getUserid()));
+            }
+
         }
+
+        return topicList;
 
     }
 
@@ -55,9 +69,11 @@ public class TopicService {
 
         TopicDao topicDao = new TopicDao();
         NodeDao nodeDao = new NodeDao();
+        UserDao userDao = new UserDao();
 
         Topic topic = topicDao.findById(id);
         topic.setNode(nodeDao.findById(topic.getNodeid()));
+        topic.setUser(userDao.findById(topic.getUserid()));
         return topic;
     }
 
@@ -153,6 +169,14 @@ public class TopicService {
         replyDao.save(reply);
     }
 
+    /**
+     * 发布一个新话题
+     * @param title
+     * @param content
+     * @param node_id
+     * @param user
+     * @return
+     */
     public int saveNewTopic(String title,String content,String node_id,User user) {
         TopicDao topicDao = new TopicDao();
         Topic topic = new Topic();
@@ -164,6 +188,38 @@ public class TopicService {
         topic.setCreatetime(DateTime.now().toString("yyyy-MM-dd HH:mm:ss"));
 
         return topicDao.save(topic);
+    }
+
+    /**
+     * 收藏或取消收藏主题
+     * @param topic
+     * @param user
+     * @param action
+     */
+    public void favTopic(Topic topic, User user, String action) {
+        FavDao favDao = new FavDao();
+        TopicDao topicDao = new TopicDao();
+        Fav fav = favDao.findByTopicIdAndUserId(topic.getId(),user.getId());
+
+        if("fav".equals(action)) {
+            if(fav == null) {
+                fav = new Fav();
+                fav.setUserid(user.getId());
+                fav.setTopicid(topic.getId());
+                fav.setCreatetime(DateTime.now().toString("yyyy-MM-dd HH:mm:ss"));
+                favDao.save(fav);
+
+                topic.setFavnum(topic.getFavnum() + 1);
+
+                topicDao.update(topic);
+            }
+        } else {
+            if(fav != null) {
+                favDao.delete(fav);
+                topic.setFavnum(topic.getFavnum() - 1);
+                topicDao.update(topic);
+            }
+        }
     }
 
 }

@@ -1,14 +1,20 @@
 package com.fanyank.service;
 
+import com.fanyank.dao.ForgetPasswordDao;
 import com.fanyank.dao.ReplyDao;
 import com.fanyank.dao.UserDao;
+import com.fanyank.entity.ForgetPassword;
 import com.fanyank.entity.Reply;
 import com.fanyank.entity.User;
 import com.fanyank.util.ConfigProp;
+import com.fanyank.util.EmailUtil;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by yanfeng-mac on 2017/3/28.
@@ -148,6 +154,82 @@ public class UserService {
         user.setAvatar(avatar);
 
         userDao.update(user);
+    }
+
+    /**
+     * 向用户发送找回密码的邮件
+     * @param username
+     */
+    public void forgetPassword(String username) {
+        UserDao userDao = new UserDao();
+        ForgetPasswordDao forgetPasswordDao = new ForgetPasswordDao();
+        User user = userDao.findByUsername(username);
+
+        if(user != null) {
+            String uuid = UUID.randomUUID().toString();
+            String email = user.getEmail();
+            String title = "来自樊主席的找回密码邮件";
+            String url = "http://localhost:8080/forget/callback.do?token="+uuid;
+            String msg = user.getUsername() + ":<br>\n" +
+                    "点击该<a href='"+url+"'>链接</a>进行设置新密码，该链接30分钟内有效。<br>\n" +
+                    url;
+
+            ForgetPassword forgetPassword = new ForgetPassword();
+            forgetPassword.setCreatetime(DateTime.now().toString("yyyy-MM-dd HH:mm:ss"));
+            forgetPassword.setToken(uuid);
+            forgetPassword.setUid(user.getId());
+
+            forgetPasswordDao.save(forgetPassword);
+            EmailUtil.sendHtmlEmail(title,msg,user.getEmail());
+        }
+    }
+
+    /**
+     * 验证用户邮箱中的链接是否失效
+     * @param token
+     * @param password
+     * @return
+     */
+    public Integer validateCallbackToken(String token) {
+        ForgetPasswordDao forgetPasswordDao = new ForgetPasswordDao();
+        UserDao userDao = new UserDao();
+        ForgetPassword fp = forgetPasswordDao.findByToken(token);
+
+        if(fp != null) {
+            String createTime = fp.getCreatetime();
+
+            DateTimeFormatter formattert = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+            DateTime dateTime = formattert.parseDateTime(createTime);
+            dateTime = dateTime.plusMinutes(30);
+
+            if(dateTime.isAfterNow()) {
+                //链接有效
+                return fp.getUid();
+            }
+
+        }
+
+        return null;
+    }
+
+    /**
+     * 验证邮箱通过后设置新密码
+     * @param password
+     * @param token
+     */
+    public void forgetPasswordSetNew(String password,String token) {
+        ForgetPasswordDao forgetPasswordDao = new ForgetPasswordDao();
+        UserDao userDao = new UserDao();
+        ForgetPassword fp = forgetPasswordDao.findByToken(token);
+
+        if(fp != null) {
+            Integer user_id = fp.getUid();
+            User user = userDao.findById(user_id);
+            user.setPassword(DigestUtils.md5Hex(password + ConfigProp.get("user.password.salt")));
+
+            userDao.update(user);
+            forgetPasswordDao.deleteByUid(user_id);
+        }
     }
 
 

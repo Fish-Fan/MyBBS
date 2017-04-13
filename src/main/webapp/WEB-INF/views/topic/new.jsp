@@ -51,7 +51,12 @@
 <script>
     $(function(){
         var editor = new Simditor({
-            textarea: $('#editor')
+            textarea: $('#editor'),
+            upload:{
+                url: 'http://up-z1.qiniu.com/',
+                params:{'token':'${token}'},
+                fileKey:'file'
+            }
         });
 
         $("#sendBtn").click(function(){

@@ -28,7 +28,7 @@
                 <table class="talk-table">
                     <tr>
                         <td width="50">
-                            <img class="avatar" src="http://7xs9b4.com1.z0.glb.clouddn.com/${topic.user.avatar}?imageView2/1/w/40/h/40" alt="">
+                            <img class="avatar" src="http://ok2crkjlq.bkt.clouddn.com/${topic.user.avatar}?imageView2/1/w/40/h/40" alt="">
                         </td>
                         <td width="80">
                             <a href="">${topic.user.username}</a>

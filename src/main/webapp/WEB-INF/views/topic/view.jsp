@@ -53,7 +53,7 @@
             </c:if>
             <ul class="unstyled inline pull-right muted">
                 <li>${topic.viewnum}次点击</li>
-                <li>${topic.favnum}人收藏</li>
+                <li><span id="favNum">${topic.favnum}</span>人收藏</li>
                 <li>${topic.likenum}人感谢</li>
             </ul>
         </div>
@@ -139,7 +139,9 @@
                                         </div>
                                     </td>
                                     <td width="50" style="vertical-align: bottom">
-                                        <a href="javascript:;" class="reply-icon" name="{{user.username}}" commentid="{{comment_id}}" touserid="{{user_id}}"> <i class="fa fa-reply"></i>回复</a>
+                                        <a href="javascript:;" class="reply-icon" name="{{user.username}}" commentid="{{comment_id}}" touserid="{{user_id}}">
+                                            <i class="fa fa-reply"></i>回复
+                                        </a>
                                     </td>
                                 </tr>
                                 {{/each}}
@@ -348,18 +350,14 @@
 
                         $(".timeago").timeago();
 
-                        //初始化回复框
-                        replyEditor = new Simditor({
-                            textarea: $(".editor-reply"),
-                            toolbar: false
-                        });
+
                     }
                 },
                 error: function () {
                     alert("服务器连接异常")
                 },
                 complete: function () {
-
+                    replyEditor.destroy();
                 }
             });
         }
@@ -436,6 +434,30 @@
                 replyEditor.destory();
             }
         }
+
+        //加入和取消收藏
+        $(".fav").click(function(){
+            var $this = $(this);
+            var favnum = parseInt($("#favNum").text());
+            var action = $this.text() == "加入收藏" ? 'fav' : 'unfav';
+            $.post("/topic/fav.do",{"topicId":"${topic.id}","action":action}).done(function(result){
+                if(result.state == "error") {
+                    alert(result.message);
+                } else {
+                    if(action == "fav") {
+                        $this.text("取消收藏");
+                        $("#favNum").text(favnum+1);
+                    } else {
+                        $this.text("加入收藏");
+                        $("#favNum").text(favnum-1);
+                    }
+                }
+            }).fail(function(){
+                alert("服务器忙，请稍后再试");
+            });
+
+
+        });
 
 
     });
