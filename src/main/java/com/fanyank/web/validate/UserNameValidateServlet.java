@@ -22,7 +22,8 @@ public class UserNameValidateServlet extends BaseServlet{
         ValidateService validateService = new ValidateService();
         String result = validateService.usernameNotExist(username);
 
-        if(action.equals("forget")) {
+
+        if(action.equals("forget") && action != null) {
             if(result.equals("true")) {
                 rendText(resp,"false");
             } else {

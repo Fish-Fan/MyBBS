@@ -139,9 +139,9 @@
                                         </div>
                                     </td>
                                     <td width="50" style="vertical-align: bottom">
-                                        <a href="javascript:;" class="reply-icon" name="{{user.username}}" commentid="{{comment_id}}" touserid="{{user_id}}">
-                                            <i class="fa fa-reply"></i>回复
-                                        </a>
+                                        <c:if test="${sessionScope.curr_user != null}" >
+                                            {{reply user.username comment_id user_id}}
+                                        </c:if>
                                     </td>
                                 </tr>
                                 {{/each}}
@@ -150,7 +150,9 @@
 
 
                         </ul>
-                        <a href="javascript:;" class="replyButton btn pull-right" commentid="{{id}}" touserid="{{userid}}">我也来说一句</a>
+                        <c:if test="${sessionScope.curr_user != null}">
+                            <a href="javascript:;" class="replyButton btn pull-right" commentid="{{id}}" touserid="{{userid}}">我也来说一句</a>
+                        </c:if>
                     </div>
                     {{/if}}
                     <!-----回复列表结束---->
@@ -175,7 +177,9 @@
                 <!----当replyList为空时渲染---->
                 {{#unless replyList}}
                 <td width="70" align="right" style="font-size: 12px">
-                    <a href="javascript:;" class="replyLink" data-count="{{counter @index}}" title="回复" commentid="{{id}}" touserid="{{userid}}"><i class="fa fa-reply"></i></a>&nbsp;
+                    <c:if test="${sessionScope.curr_user != null}">
+                        <a href="javascript:;" class="replyLink" data-count="{{counter @index}}" title="回复" commentid="{{id}}" touserid="{{userid}}"><i class="fa fa-reply"></i></a>&nbsp;
+                    </c:if>
                     <span class="badge">{{counter @index}}</span>
                 </td>
                 {{/unless}}
@@ -288,6 +292,22 @@
         Handlebars.registerHelper("counter", function (index){
             return index + 1;
         });
+
+        <c:if test="${sessionScope.curr_user != null}">
+        Handlebars.registerHelper("reply",function (username,comment_id,user_id) {
+            var result = "";
+
+            var current_userId = ${sessionScope.curr_user.id};
+            if(current_userId != null && current_userId != user_id) {
+                result =  '<a href="javascript:;" class="reply-icon" name="'+ username +'" commentid="'+ comment_id +'" touserid="'+ user_id +'">'+'<i class="fa fa-reply"></i>回复</a>';
+            }
+
+
+
+            return new Handlebars.SafeString(result);
+
+        });
+        </c:if>
 
 
         //回复功能

@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.Map;
 import org.apache.commons.lang3.*;
 
+
 /**
  * Created by yanfeng-mac on 2017/3/28.
  */
@@ -27,6 +28,7 @@ public class LoginServlet extends BaseServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         String username = req.getParameter("username");
         String password = req.getParameter("password");
 

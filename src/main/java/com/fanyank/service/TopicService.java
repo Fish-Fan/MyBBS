@@ -42,7 +42,6 @@ public class TopicService {
             topicList = topicDao.getAllTopic();
             for(Topic topic : topicList) {
                 topic.setUser(userDao.findById(topic.getUserid()));
-                System.out.println(topic);
             }
 
         } else {

@@ -81,7 +81,7 @@
                     required: true,
                     minlength: 3,
                     maxlength: 10,
-                    remote: "/validate/username"
+                    remote: "/validate/username?action=1"
                 },
 
                 password: {

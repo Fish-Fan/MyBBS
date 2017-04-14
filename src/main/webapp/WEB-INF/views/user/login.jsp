@@ -50,6 +50,10 @@
                 </div>
             </div>
 
+            <div id="catch-box">
+
+            </div>
+
             <div class="form-actions">
                 <button class="btn btn-primary" type="button" id="loginBtn">登录</button>
                 <a class="pull-right" href="/signUp.do">注册账号</a>
@@ -66,8 +70,24 @@
 
 <script src="/static/js/jquery-1.11.3.min.js"></script>
 <script src="/static/js/jquery.validate.min.js"></script>
+<script src="http://static.geetest.com/static/tools/gt.js"></script>
 <script>
     $(function () {
+//        initGeetest({
+//            // 以下配置参数来自服务端 SDK
+//            gt: data.gt,
+//            challenge: data.challenge,
+//            offline: !data.success,
+//            new_captcha: data.new_captcha
+//        }, function (captchaObj) {
+//            // 这里可以调用验证实例 captchaObj 的实例方法
+//            captchaObj.appendTo('#catch-box');
+//        });
+
+
+
+
+
         $("#loginForm").validate({
             errorClass: "text-error",
             errorElement: "span",
