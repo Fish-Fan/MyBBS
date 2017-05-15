@@ -34,7 +34,7 @@ public class TopicServlet extends BaseServlet {
             getUnReadMsgCount(user,req);
         }
 
-        forward(req,resp,"topic/view");
+        forward(req,resp,"topic/view2");
 
 
     }
