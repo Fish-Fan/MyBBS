@@ -101,7 +101,7 @@
                                             </td>
                                             <td width="50" style="vertical-align: bottom">
                                                 <c:if test="${sessionScope.curr_user != null}" >
-                                                    <a href="javascript:;" @click="initReplyBody(reply)"><i class="fa fa-reply"></i></a>
+                                                    <a href="javascript:;" @click="initReplyBody(item,reply.user_id)"><i class="fa fa-reply"></i></a>
                                                 </c:if>
                                             </td>
                                         </tr>
@@ -250,7 +250,7 @@
                     }
                 })
             },
-            InitReplyBox: function (item) {
+            InitReplyBox: function (item,hastoUserId) {
                 if(!item.isShow) {
                     var replyEditor = new Simditor({
                         textarea: '#replyInput' + item.id,
@@ -260,6 +260,9 @@
                     item.isShow = true;
                     item.replyBtnMsg = '收起评论框';
                     this.replySimditor = replyEditor;
+                    if(!hastoUserId) {
+                        this.replyBody.toUserId = item.userid;
+                    }
                 } else {
 //                    replyEditor.destroy();
                     item.isShow = false;
@@ -274,7 +277,7 @@
                 return "replyInput" + item.id;
             },
             sendReply: function (item) {
-                console.log("111");
+                console.log(this.replyBody);
                 var vm = this;
                 vm.replyBody.content = vm.replySimditor.getValue();
 
@@ -285,17 +288,21 @@
                         vm.$http.post('/topic/comment/reply.do',vm.replyBody).then((response) => {
                             commentContainer.getJsonObject();
                         })
+                    } else {
+                        vm.$http.post('/topic/comment/reply.do',vm.replyBody).then((response) => {
+                            commentContainer.getJsonObject();
+                        })
                     }
                 }
 
             },
-            initReplyBody: function (reply) {
-                this.replyBody.commentId = reply.comment_id;
-                this.replyBody.toUserId = reply.to_user_id;
-                this.InitReplyBox(reply);
+            initReplyBody: function (item,toUserId) {
+                this.replyBody.commentId = item.id;
+                this.replyBody.toUserId = toUserId;
+                this.InitReplyBox(item,true);
             }
         }
-     
+
 
     });
 
