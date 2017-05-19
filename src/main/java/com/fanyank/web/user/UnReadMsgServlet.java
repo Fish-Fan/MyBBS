@@ -12,10 +12,10 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
- * Created by yanfeng-mac on 2017/4/10.
+ * Created by yanfeng-mac on 2017/5/19.
  */
-@WebServlet("/user/alreadyreadmsg")
-public class AlreadyReadMessageServlet extends BaseServlet {
+@WebServlet("/user/getunreadmsg")
+public class UnReadMsgServlet extends BaseServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         UserService userService = new UserService();
@@ -24,12 +24,7 @@ public class AlreadyReadMessageServlet extends BaseServlet {
         User user = (User) session.getAttribute("curr_user");
 
         if(user != null) {
-            req.setAttribute("replyList",userService.getAlreadyReadMsg(user));
-            getUnReadMsgCount(user,req);
-            System.out.println(userService.getAlreadyReadMsg(user));
+            rendJson(resp,userService.getUnReadMsg(user));
         }
-
-        forward(req,resp,"user/message");
-
     }
 }
