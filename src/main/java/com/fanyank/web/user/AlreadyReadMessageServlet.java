@@ -26,6 +26,7 @@ public class AlreadyReadMessageServlet extends BaseServlet {
         if(user != null) {
             req.setAttribute("replyList",userService.getAlreadyReadMsg(user));
             getUnReadMsgCount(user,req);
+            System.out.println(userService.getAlreadyReadMsg(user));
         }
 
         forward(req,resp,"user/message");

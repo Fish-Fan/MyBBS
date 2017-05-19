@@ -122,7 +122,7 @@
                                     <a name="new"></a>
                                     <div class="talk-item muted" style="font-size: 12px"><i class="fa fa-plus"></i> 添加一条新回复</div>
                                     <form class="replyCommentForm" style="padding: 15px;margin-bottom:0px;">
-                                        <textarea v-model="replyValue" class="editor-reply"></textarea>
+                                        <textarea v-model="replyValue" :id="computedReplyInputId(item)" class="editor-reply"></textarea>
                                     </form>
                                     <div class="talk-item muted" style="text-align: right;font-size: 12px">
                                         <span class="pull-left">请尽量让自己的回复能够对别人有帮助回复</span>
@@ -293,6 +293,9 @@
                 this.replyBody.commentId = item.id;
                 this.replyBody.toUserId = toUserId;
                 this.InitReplyBox(item,true);
+            },
+            computedReplyInputId: function (item) {
+                return "replyInput" + item.id;
             }
         }
 
