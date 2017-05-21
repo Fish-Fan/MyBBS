@@ -29,6 +29,7 @@ public class SignUpServlet extends BaseServlet {
         String password = req.getParameter("password");
         String email = req.getParameter("email");
 
+
         Map<String,String> result = Maps.newHashMap();
 
         if(StringUtils.isNotEmpty(username) && StringUtils.isNotEmpty(password) && StringUtils.isNotEmpty(email)) {

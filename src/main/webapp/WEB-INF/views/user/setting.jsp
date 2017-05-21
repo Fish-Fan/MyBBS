@@ -13,28 +13,43 @@
 <body>
 <%@ include file="../include/nav.jsp"%>
 <!--header-bar end-->
-<div class="container">
+<div class="container" id="container">
     <div class="box">
         <div class="box-header">
             <span class="title"><i class="fa fa-cog"></i> 基本设置</span>
         </div>
 
-        <form action="" class="form-horizontal" id="emailForm">
+        <form action="" class="form-horizontal" validate>
             <div class="control-group">
                 <label class="control-label">账号</label>
                 <div class="controls">
-                    <input type="text" value="${sessionScope.curr_user.username}" readonly>
+                    <input type="text"
+                           value="${sessionScope.curr_user.username}"
+                           v-model="username"
+                           readonly>
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label">电子邮件</label>
                 <div class="controls">
-                    <input type="text" name="email" value="${sessionScope.curr_user.email}">
+                    <input type="email"
+                           name="email"
+                           v-model="email"
+                           value="${sessionScope.curr_user.email}"
+                           required
+                           @blur="checkEmail"
+                    >
+                    <p class="text-danger" v-if="emailError">该邮件地址已经被注册，请重新填写该项</p>
                 </div>
             </div>
             <div class="form-actions">
-                <button class="btn btn-primary" type="button" id="btnSaveEmail">保存</button>
-                <span id="emailHelp" class="text-success hide">电子邮件修改成功</span>
+                <button class="btn btn-primary"
+                        type="button"
+                        @click="emailSubmit"
+                        id="btnSaveEmail">保存</button>
+                <span id="emailHelp"
+                      v-if="emailSubmitState"
+                      class="text-success">电子邮件修改成功</span>
             </div>
 
         </form>
@@ -51,19 +66,39 @@
             <div class="control-group">
                 <label class="control-label">密码</label>
                 <div class="controls">
-                    <input type="password" name="password" id="password">
+                    <input type="password"
+                           name="password"
+                           v-model="password"
+                           id="password"
+                           required
+                           minlength="6"
+                           maxlength="16"
+                    >
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label">重复密码</label>
                 <div class="controls">
-                    <input type="password" name="repassword">
+                    <input type="password"
+                           v-model="repassword"
+                           name="repassword"
+                           required
+                           minlength="6"
+                           maxlength="16"
+                           @blur="checkPassword"
+                    >
+                    <p class="text-error" v-if="passwordError">两次输入密码需保持一致</p>
 
                 </div>
             </div>
             <div class="form-actions">
-                <button class="btn btn-primary" id="btnSavePassword" type="button">保存</button>
-                <span id="passwordHelp" class="text-success hide">密码修改成功,请重新登录</span>
+                <button class="btn btn-primary"
+                        id="btnSavePassword"
+                        @click="passwordSubmit"
+                        type="button">保存</button>
+                <span id="passwordHelp"
+                      v-if="passwordSubmitState"
+                      class="text-success">密码修改成功,请重新登录</span>
             </div>
 
         </form>
@@ -104,6 +139,75 @@
 <script src="/static/js/jquery-1.11.3.min.js"></script>
 <script src="/static/js/jquery.validate.min.js"></script>
 <script src="/static/js/webuploader/webuploader.min.js"></script>
+<script src="http://cdn.bootcss.com/vue/1.0.25-csp/vue.js"></script>
+<script src="/static/js/vue-resource.js"></script>
+<%--<script src="http://cdn.bootcss.com/vue-validator/2.1.3/vue-validator.js"></script>--%>
+<script>
+    //设置post请求为form data形式
+    Vue.http.options.emulateJSON = true;
+
+    var container = new Vue({
+        el: "#container",
+        data: {
+            username: '',
+            password: '',
+            email: '',
+            repassword: '',
+            passwordError: false,
+            emailError: false,
+            emailSubmitState: false,
+            passwordSubmitState: false
+        },
+        methods: {
+            checkEmail: function () {
+                var vm = this;
+                if(vm.email.trim()) {
+                    vm.$http.get("/validate/email?email=" + vm.email).then((response) =>  {
+                        if(response.data == "false") {
+                            vm.emailError = true;
+                        } else {
+                            vm.emailError = false;
+                        }
+                    });
+                }
+            },
+            checkPassword: function () {
+                var vm = this;
+                if(vm.password != vm.repassword) {
+                    vm.passwordError = true;
+                } else {
+                    vm.passwordError = false;
+                }
+            },
+            emailSubmit: function () {
+                var vm = this;
+                var email = vm.email;
+                if(email.trim()) {
+                    vm.$http.post("/user/changeemail.do",{email: email}).then((response) => {
+                        var result = response.data.state;
+                        if(result == "success") {
+                            this.emailSubmitState = true;
+                        }
+                    });
+                }
+
+            },
+            passwordSubmit: function () {
+                var vm = this;
+                var password = vm.password;
+                if(password.trim()) {
+                    vm.$http.post("/user/changepassword.do",{password: password}).then((response) => {
+                        var result = response.data.state;
+                        if(result == "success") {
+                            vm.passwordSubmitState = true;
+                        }
+                    });
+                }
+            }
+
+        }
+    });
+</script>
 <script>
     $(function(){
 
@@ -160,112 +264,6 @@
 
         });
 
-
-
-
-        $("#btnSaveEmail").click(function(){
-            $("#emailForm").submit();
-        });
-
-        $("#emailForm").validate({
-            errorClass:"text-error",
-            errorElement:"span",
-            rules:{
-                email:{
-                    required:true,
-                    email:true,
-                    remote:"/validate/email"
-                }
-            },
-            messages:{
-                email:{
-                    required:"请输入电子邮件",
-                    email:"电子邮件格式错误",
-                    remote:"邮件地址已注册"
-                }
-            },
-            submitHandler:function(form){
-                var $btn = $("#btnSaveEmail");
-                $.ajax({
-                    url:"/user/changeemail.do",
-                    type:"post",
-                    data:$(form).serialize(),
-                    beforeSend:function(){
-                        $btn.text("保存中...").attr("disabled","disabled");
-                    },
-                    success:function(data){
-                        if(data.state == "success") {
-                            $("#emailHelp").show().fadeOut(2000);
-                        } else {
-                            alert("修改失败");
-                        }
-                    },
-                    error:function(){
-                        alert("服务器异常，请稍后再试");
-                    },
-                    complete:function(){
-                        $btn.text("保存").removeAttr("disabled");
-                    }
-                });
-            }
-        });
-
-        $("#btnSavePassword").click(function(){
-            $("#passwordForm").submit();
-        });
-
-        $("#passwordForm").validate({
-            errorClass:"text-error",
-            errorElement:"span",
-            rules:{
-                password:{
-                    required:true,
-                    rangelength:[6,18]
-                },
-                repassword:{
-                    required:true,
-                    rangelength:[6,18],
-                    equalTo:"#password"
-                }
-            },
-            messages:{
-                password:{
-                    required:"请输入密码",
-                    rangelength:"密码长度6~18位"
-                },
-                repassword:{
-                    required:"请输入确认密码",
-                    rangelength:"密码长度6~18位",
-                    equalTo:"两次密码不一致"
-                }
-            },
-            submitHandler:function(form){
-                var $btn = $("#btnSavePassword");
-                $.ajax({
-                    url:"/user/changepassword.do",
-                    type:"post",
-                    data:$(form).serialize(),
-                    beforeSend:function(){
-                        $btn.text("保存中...").attr("disabled","disabled");
-                    },
-                    success:function(data){
-                        if(data.state == "success") {
-                            $("#passwordHelp").show().fadeOut(1000,function(){
-                                window.location.href = "/loginOut.do";
-                            });
-                        } else {
-                            alert("保存失败");
-                        }
-                    },
-                    error:function(){
-                        alert("服务器忙，请稍后再试");
-                    },
-                    complete:function(){
-                        $btn.text("保存").removeAttr("disabled");
-                    }
-                });
-            }
-        });
 
     });
 </script>

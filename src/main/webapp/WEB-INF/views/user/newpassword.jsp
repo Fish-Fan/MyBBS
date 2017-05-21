@@ -12,30 +12,58 @@
 <body>
 <%@ include file="../include/nav.jsp"%>
 <!--header-bar end-->
-<div class="container">
+<div class="container" id="passwordForm">
     <div class="box">
         <div class="box-header">
             <span class="title"><i class="fa fa-sign-in"></i> 设置新密码</span>
         </div>
 
-        <form action="" class="form-horizontal" id="passwordForm">
-            <input type="hidden" name="token" value="${token}">
-            <div class="control-group">
-                <label class="control-label">新密码</label>
-                <div class="controls">
-                    <input type="password" name="password" id="password">
+        <validator name="validation">
+            <form action="" class="form-horizontal">
+                <input
+                        type="hidden"
+                        name="token"
+                        value="${token}"
+                        v-model="dataBody.token"
+                >
+                <div class="control-group">
+                    <label class="control-label">新密码</label>
+                    <div class="controls">
+                        <input
+                                type="password"
+                                name="password"
+                                id="password"
+                                v-validate:password="{required: true,minlength: 6,maxlength: 18}"
+                                v-model="dataBody.password"
+                        >
+                        <span class="text-danger" v-if="$validation.password.required">请输入您的新密码</span>
+                        <span class="text-danger" v-if="$validation.password.minlength">长度不得少于6个字符</span>
+                        <span class="text-danger" v-if="$validation.password.maxlength">长度不得超过18个字符</span>
+                    </div>
                 </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label">重复密码</label>
-                <div class="controls">
-                    <input type="password" name="repassword">
+                <div class="control-group">
+                    <label class="control-label">重复密码</label>
+                    <div class="controls">
+                        <input
+                                type="password"
+                                name="repassword"
+                                @blur="validateNewPassword"
+                                v-model="dataBody.repassword"
+                        >
+                        <span class="text-danger" v-if="checked">两次输入的密码不一致，请重新输入</span>
+                    </div>
                 </div>
-            </div>
-            <div class="form-actions">
-                <button class="btn btn-primary" type="button" id="setBtn">设置</button>
-            </div>
-        </form>
+                <div class="form-actions">
+                    <button
+                            class="btn btn-primary"
+                            type="button"
+                            id="setBtn"
+                            @click="onSubmit($validation,valid,$event)"
+                            :disabled="disabled"
+                    >设置</button>
+                </div>
+            </form>
+        </validator>
 
 
 
@@ -44,72 +72,51 @@
 </div>
 <!--container end-->
 
-<script src="/static/js/jquery-1.11.3.min.js"></script>
-<script src="/static/js/jquery.validate.min.js"></script>
+<script src="http://cdn.bootcss.com/vue/1.0.25-csp/vue.js"></script>
+<script src="/static/js/vue-resource.js"></script>
+<script src="http://cdn.bootcss.com/vue-validator/2.1.3/vue-validator.js"></script>
 <script>
 
-    $(function(){
-
-        $("#setBtn").click(function(){
-            $("#passwordForm").submit();
-        });
-
-        $("#passwordForm").validate({
-            errorClass:"text-error",
-            errorElement:"span",
-            rules:{
-                password:{
-                    required:true,
-                    rangelength:[6,18]
-                },
-                repassword:{
-                    required:true,
-                    rangelength:[6,18],
-                    equalTo:"#password"
-                }
-            },
-            messages:{
-                password:{
-                    required:"请输入密码",
-                    rangelength:"密码长度6~18位"
-                },
-                repassword:{
-                    required:"请输入确认密码",
-                    rangelength:"密码长度6~18位",
-                    equalTo:"两次密码不一致"
-                }
-            },
-            submitHandler:function(form){
-                var $btn = $("#setBtn");
-                $.ajax({
-                    url:"/forgetpassword/setpassword.do",
-                    type:"post",
-                    data:$(form).serialize(),
-                    beforeSend:function(){
-                        $btn.text("设置中...").attr("disabled","disabled");
-                    },
-                    success:function(json){
-                        if(json.state == "error") {
-                            alert(json.message);
-                        } else {
-                            window.location.href = "/login.do?state=1003"
-                        }
-                    },
-                    error:function(){
-                        alert("服务器异常，请稍后再试");
-                    },
-                    complete:function(){
-                        $btn.text("设置").removeAttr("disabled");
-                    }
-                });
+    var passwordForm = new Vue({
+        el: "#passwordForm",
+        data: {
+            checked: false,
+            disabled: false,
+            dataBody: {
+                token: '',
+                password: '',
+                repassword: ''
             }
-        });
-
-
+        },
+        methods: {
+            validateNewPassword: function () {
+                var vm = this;
+                if(vm.dataBody.password != vm.dataBody.repassword) {
+                    vm.checked = true;
+                } else {
+                    vm.checked = false;
+                }
+            },
+            onSubmit: function (bool,event) {
+                var vm = this;
+                if(bool) {
+                    vm.disabled = true;
+                    if(vm.dataBody.password == vm.dataBody.repassword) {
+                        vm.$http.post("/forgetpassword/setpassword.do",vm.dataBody).then((response) => {
+                            window.location.href = "/login.do?state=1003";
+                        });
+                    } else {
+                        vm.disabled = false;
+                        vm.checked = true;
+                    }
+                } else {
+                    event.preventDefault();
+                }
+            }
+        }
     });
-
-
 </script>
+
 
 </body>
 </html>
