@@ -89,72 +89,7 @@
 <script src="//cdn.bootcss.com/vue/1.0.24/vue.js" type="text/javascript" charset="utf-8"></script>
 <script src="http://cdn.bootcss.com/vue-validator/2.1.3/vue-validator.js"></script>
 <script src="/static/js/vue-resource.js"></script>
-<script src="/static/js/login.js">
-
-</script>
-
-<%--<script src="/static/js/jquery-1.11.3.min.js"></script>--%>
-<%--<script src="/static/js/jquery.validate.min.js"></script>--%>
-<%--<script src="http://static.geetest.com/static/tools/gt.js"></script>--%>
-<%--<script>--%>
-    <%--$(function () {--%>
-
-        <%--$("#loginForm").validate({--%>
-            <%--errorClass: "text-error",--%>
-            <%--errorElement: "span",--%>
-            <%--rules: {--%>
-                <%--username: {--%>
-                    <%--required: true--%>
-                <%--},--%>
-                <%--password: {--%>
-                    <%--required: true--%>
-                <%--}--%>
-            <%--},--%>
-            <%--messages: {--%>
-                <%--username: {--%>
-                    <%--required: "请输入账号"--%>
-                <%--},--%>
-                <%--password: {--%>
-                    <%--required: "请输入密码"--%>
-                <%--}--%>
-            <%--},--%>
-            <%--submitHandler: function (form) {--%>
-                <%--var $btn = $("#loginBtn");--%>
-                <%--$.ajax({--%>
-                    <%--url: "/login.do",--%>
-                    <%--type: "post",--%>
-                    <%--data: $(form).serialize(),--%>
-                    <%--beforeSend: function () {--%>
-                        <%--$btn.text("登录中...").attr("disabled","disabled")--%>
-                    <%--},--%>
-                    <%--success: function (json) {--%>
-                        <%--if(json.state == "error") {--%>
-                            <%--alert(json.message);--%>
-                        <%--} else {--%>
-                            <%--&lt;%&ndash;window.location.href = "${not empty param.redirecturl ? param.redirecturl : '/index.do'}";&ndash;%&gt;--%>
-                            <%--window.location.href = "/index.do";--%>
-                        <%--}--%>
-                    <%--},--%>
-                    <%--error: function () {--%>
-                        <%--alert("服务器异常");--%>
-                    <%--},--%>
-                    <%--complete: function () {--%>
-                        <%--$btn.text("登录").removeAttr("disabled");--%>
-                    <%--}--%>
-                <%--});--%>
-
-            <%--}--%>
-
-        <%--});--%>
-
-        <%--$("#loginBtn").click(function () {--%>
-            <%--$("#loginForm").submit();--%>
-        <%--});--%>
-
-
-    <%--});--%>
-
-<%--</script>--%>
+<script src="/static/js/login.js"></script>
 
 </body>
 </html>

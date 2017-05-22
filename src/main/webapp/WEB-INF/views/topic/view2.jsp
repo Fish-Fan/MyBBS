@@ -233,16 +233,20 @@
                     //commentList接受json数据
                     vm.$set('commentList',response.data.data);
                     //声明commentList(不同于data中的commentList),为Vue.set做准备
-                    var commentList = response.data.data;
+//                    var commentList = response.data.data;
                     //commentNum赋值(回复总数)
                     vm.commentNum = vm.commentList.length;
                     //lastReplyTime赋值(最后回复时间赋值)
                     vm.lastReplyTime = vm.commentList[parseInt(vm.commentNum)-1].createtime;
                     for(var i = 0;i < vm.commentList.length;i++) {
                         //为commentList添加新的属性(使用Vue.set监测commentList的变化)
-                        Vue.set(commentList[i],'index',i);
-                        Vue.set(commentList[i],'isShow',false);
-                        Vue.set(commentList[i],'replyBtnMsg','我也来说一句');
+//                        Vue.set(commentList[i],'index',i);
+//                        Vue.set(commentList[i],'isShow',false);
+//                        Vue.set(commentList[i],'replyBtnMsg','我也来说一句');
+//                        vm.commentList.$set(i,{})
+                        vm.commentList[i].index = i;
+                        vm.commentList[i].isShow = false;
+                        vm.commentList[i].replyBtnMsg = 'wo我也来说一句';
                     }
                 })
 

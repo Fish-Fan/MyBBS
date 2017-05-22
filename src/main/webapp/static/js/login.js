@@ -20,7 +20,13 @@ var loginBox = new Vue({
                 this.disabled = true;
                 this.$http.post("/login.do",{username: this.username,password: this.password}).then((response) => {
                     "use strict";
-                    window.location.href = "/index.do";
+                    if(response.data.state != "error") {
+                        window.location.href = "/index.do";
+                    } else {
+                        alert(response.data.message);
+                        this.disabled = false;
+                        this.loginBtnMsg = '登录';
+                    }
                 },(response) => {
                     "use strict";
                     alert("服务器连接异常");
